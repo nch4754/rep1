@@ -983,114 +983,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow2')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText7",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText8",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DelimitedText9",
-								"type": "DatasetReference"
-							},
-							"name": "sink2"
-						},
-						{
-							"dataset": {
-								"referenceName": "DelimitedText10",
-								"type": "DatasetReference"
-							},
-							"name": "sink4"
-						}
-					],
-					"transformations": [
-						{
-							"name": "split1"
-						},
-						{
-							"name": "split2"
-						},
-						{
-							"name": "split3"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          ID as string,",
-						"          Name as string,",
-						"          Gender as string,",
-						"          Age as string,",
-						"          {Height (cm)} as string,",
-						"          {Weight (kg)} as string,",
-						"          Team as string,",
-						"          NOC as string,",
-						"          Games as string,",
-						"          Year as string,",
-						"          Season as string,",
-						"          City as string,",
-						"          Sport as string,",
-						"          Event as string,",
-						"          Medal as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"split2@Silver split(Medal==\"gold\",",
-						"     disjoint: false) ~> split1@(Gold, Goldstream)",
-						"split3@Bronze split(Medal==\"Silver\",",
-						"     disjoint: false) ~> split2@(Silver, Silverstream)",
-						"source1 split(Medal==\"Bronze\",",
-						"     disjoint: false) ~> split3@(Bronze, Bronzestream)",
-						"split1@Gold sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1",
-						"split2@Silver sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink2",
-						"split3@Bronze sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink4"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText7')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText8')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText9')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText10')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1439,6 +1331,235 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow4')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText13",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText3",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DelimitedText3",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "DelimitedText3",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ID as string,",
+						"          Name as string,",
+						"          Gender as string,",
+						"          Age as string,",
+						"          {Height (cm)} as string,",
+						"          {Weight (kg)} as string,",
+						"          Team as string,",
+						"          NOC as string,",
+						"          Games as string,",
+						"          Year as string,",
+						"          Season as string,",
+						"          City as string,",
+						"          Sport as string,",
+						"          Event as string,",
+						"          Medal as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 split(Medal==\"Gold\",",
+						"     Medal==\"Silver\",",
+						"     Medal==\"bronze\",",
+						"     disjoint: false) ~> split1@(gold, silver, bronze)",
+						"split1@gold sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as string,",
+						"          Name as string,",
+						"          Gender as string,",
+						"          Age as string,",
+						"          {Height (cm)} as string,",
+						"          {Weight (kg)} as string,",
+						"          Team as string,",
+						"          NOC as string,",
+						"          Games as string,",
+						"          Year as string,",
+						"          Season as string,",
+						"          City as string,",
+						"          Sport as string,",
+						"          Event as string,",
+						"          Medal as string",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1",
+						"split1@bronze sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as string,",
+						"          Name as string,",
+						"          Gender as string,",
+						"          Age as string,",
+						"          {Height (cm)} as string,",
+						"          {Weight (kg)} as string,",
+						"          Team as string,",
+						"          NOC as string,",
+						"          Games as string,",
+						"          Year as string,",
+						"          Season as string,",
+						"          City as string,",
+						"          Sport as string,",
+						"          Event as string,",
+						"          Medal as string",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink2",
+						"split1@silver sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as string,",
+						"          Name as string,",
+						"          Gender as string,",
+						"          Age as string,",
+						"          {Height (cm)} as string,",
+						"          {Weight (kg)} as string,",
+						"          Team as string,",
+						"          NOC as string,",
+						"          Games as string,",
+						"          Year as string,",
+						"          Season as string,",
+						"          City as string,",
+						"          Sport as string,",
+						"          Event as string,",
+						"          Medal as string",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink3"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText13')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText13')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "2016_Medals.csv",
+						"container": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ID",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "Height (cm)",
+						"type": "String"
+					},
+					{
+						"name": "Weight (kg)",
+						"type": "String"
+					},
+					{
+						"name": "Team",
+						"type": "String"
+					},
+					{
+						"name": "NOC",
+						"type": "String"
+					},
+					{
+						"name": "Games",
+						"type": "String"
+					},
+					{
+						"name": "Year",
+						"type": "String"
+					},
+					{
+						"name": "Season",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "Sport",
+						"type": "String"
+					},
+					{
+						"name": "Event",
+						"type": "String"
+					},
+					{
+						"name": "Medal",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage2')]"
 			]
 		}
 	]
