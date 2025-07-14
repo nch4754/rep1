@@ -28,9 +28,6 @@
 					"name": "sink2"
 				},
 				{
-					"name": "sink3"
-				},
-				{
 					"dataset": {
 						"referenceName": "DelimitedText10",
 						"type": "DatasetReference"
@@ -90,10 +87,6 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink2",
-				"source1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink3",
 				"split3@Bronze sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
